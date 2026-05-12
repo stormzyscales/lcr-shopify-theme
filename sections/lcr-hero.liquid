@@ -1,0 +1,311 @@
+{% comment %} sections/lcr-hero.liquid {% endcomment %}
+
+<style>
+  .lcr-hero {
+    position: relative;
+    height: 100svh;
+    min-height: 620px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  /* Background image */
+  .lcr-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .lcr-hero__bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+  .lcr-hero__bg-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(150deg, #1a1916 0%, #2e2c29 50%, #3d3b35 100%);
+  }
+
+  /* Gradient overlay */
+  .lcr-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(26,25,22,0.15) 0%,
+      rgba(26,25,22,0.0)  40%,
+      rgba(26,25,22,0.65) 100%
+    );
+  }
+
+  /* Content */
+  .lcr-hero__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--max-w);
+    margin-inline: auto;
+    padding: var(--gutter);
+    padding-bottom: clamp(3rem, 7vh, 6rem);
+  }
+
+  .lcr-hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: lcr-fade-up 0.8s var(--ease) 0.1s both;
+  }
+  .lcr-hero__eyebrow-line {
+    width: 32px; height: 1px;
+    background: var(--c-accent);
+    flex-shrink: 0;
+  }
+  .lcr-hero__eyebrow .t-label { color: rgba(255,255,255,0.65); }
+
+  .lcr-hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 9.5vw, 9rem);
+    font-weight: 300;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    color: var(--c-white);
+    max-width: 14ch;
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: lcr-fade-up 0.9s var(--ease) 0.25s both;
+  }
+  .lcr-hero__heading em {
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .lcr-hero__sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.62);
+    max-width: 44ch;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: lcr-fade-up 0.9s var(--ease) 0.4s both;
+  }
+
+  .lcr-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: lcr-fade-up 0.9s var(--ease) 0.55s both;
+  }
+
+  .lcr-hero__cta-primary {
+    background: var(--c-white);
+    color: var(--c-dark);
+    padding: 0.95rem 2.4rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: var(--t);
+  }
+  .lcr-hero__cta-primary:hover {
+    background: var(--c-accent);
+    color: var(--c-white);
+    transform: translateY(-1px);
+  }
+
+  .lcr-hero__cta-secondary {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    padding-bottom: 2px;
+    transition: color 0.25s, border-color 0.25s;
+  }
+  .lcr-hero__cta-secondary:hover {
+    color: var(--c-white);
+    border-color: rgba(255,255,255,0.65);
+  }
+
+  /* Stats strip */
+  .lcr-hero__stats {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    opacity: 0;
+    animation: lcr-fade-up 0.9s var(--ease) 0.7s both;
+  }
+  .lcr-hero__stat {
+    padding: 1.25rem 2rem;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    min-width: 100px;
+  }
+  .lcr-hero__stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--c-white);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  .lcr-hero__stat-label {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    display: block;
+  }
+
+  /* Scroll indicator */
+  .lcr-hero__scroll {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 2.5rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .lcr-hero__scroll-text {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    writing-mode: vertical-rl;
+  }
+  .lcr-hero__scroll-line {
+    width: 1px; height: 48px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .lcr-hero__scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%; left: 0;
+    width: 1px; height: 100%;
+    background: var(--c-accent);
+    animation: scroll-pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse {
+    0%   { top: -100%; }
+    100% { top: 200%; }
+  }
+
+  @media (max-width: 768px) {
+    .lcr-hero__stats  { display: none; }
+    .lcr-hero__scroll { display: none; }
+  }
+</style>
+
+<section class="lcr-hero">
+  <div class="lcr-hero__bg">
+    {% if section.settings.hero_image %}
+      {{
+        section.settings.hero_image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: section.settings.hero_image.alt | default: 'LCR Luxury Car Rentals Cape Town'
+      }}
+    {% else %}
+      <div class="lcr-hero__bg-placeholder"></div>
+    {% endif %}
+  </div>
+
+  <div class="lcr-hero__overlay"></div>
+
+  <div class="lcr-hero__content">
+    <div class="lcr-hero__eyebrow">
+      <span class="lcr-hero__eyebrow-line"></span>
+      <span class="t-label">Cape Town, South Africa</span>
+    </div>
+
+    <h1 class="lcr-hero__heading">
+      {{ section.settings.heading | default: 'Drive Without<br><em>Compromise</em>' }}
+    </h1>
+
+    <p class="lcr-hero__sub">
+      {{ section.settings.subheading | default: 'Curated luxury and exotic vehicles for daily, weekly, and experiential hire across the Cape Peninsula.' }}
+    </p>
+
+    <div class="lcr-hero__actions">
+      <a href="{{ section.settings.cta_primary_url | default: routes.collections_url }}" class="lcr-hero__cta-primary">
+        {{ section.settings.cta_primary_text | default: 'View the Fleet' }}
+        <span>→</span>
+      </a>
+      <a href="{{ section.settings.cta_secondary_url | default: '/pages/experiences' }}" class="lcr-hero__cta-secondary">
+        {{ section.settings.cta_secondary_text | default: 'Curated Experiences' }}
+        <span>↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="lcr-hero__stats">
+    <div class="lcr-hero__stat">
+      <span class="lcr-hero__stat-num">{{ section.settings.stat_1_val | default: '40+' }}</span>
+      <span class="lcr-hero__stat-label">{{ section.settings.stat_1_label | default: 'Vehicles' }}</span>
+    </div>
+    <div class="lcr-hero__stat">
+      <span class="lcr-hero__stat-num">{{ section.settings.stat_2_val | default: '5★' }}</span>
+      <span class="lcr-hero__stat-label">{{ section.settings.stat_2_label | default: 'Rated' }}</span>
+    </div>
+    <div class="lcr-hero__stat">
+      <span class="lcr-hero__stat-num">{{ section.settings.stat_3_val | default: '24h' }}</span>
+      <span class="lcr-hero__stat-label">{{ section.settings.stat_3_label | default: 'Concierge' }}</span>
+    </div>
+  </div>
+
+  <div class="lcr-hero__scroll hide-mobile">
+    <span class="lcr-hero__scroll-text">Scroll</span>
+    <div class="lcr-hero__scroll-line"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Background image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Drive Without Compromise" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "text", "id": "cta_primary_text", "label": "Primary CTA text", "default": "View the Fleet" },
+    { "type": "url", "id": "cta_primary_url", "label": "Primary CTA link" },
+    { "type": "text", "id": "cta_secondary_text", "label": "Secondary CTA text", "default": "Curated Experiences" },
+    { "type": "url", "id": "cta_secondary_url", "label": "Secondary CTA link" },
+    { "type": "header", "content": "Stats" },
+    { "type": "text", "id": "stat_1_val",   "label": "Stat 1 value", "default": "40+" },
+    { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "Vehicles" },
+    { "type": "text", "id": "stat_2_val",   "label": "Stat 2 value", "default": "5★" },
+    { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "Rated" },
+    { "type": "text", "id": "stat_3_val",   "label": "Stat 3 value", "default": "24h" },
+    { "type": "text", "id": "stat_3_label", "label": "Stat 3 label", "default": "Concierge" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

@@ -1,0 +1,179 @@
+{% comment %} sections/lcr-features.liquid {% endcomment %}
+
+<style>
+  .lcr-features {
+    background: var(--c-dark);
+    overflow: hidden;
+    position: relative;
+  }
+  .lcr-features::before {
+    content: 'LCR';
+    position: absolute;
+    right: -0.1em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: 30vw;
+    font-weight: 300;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .lcr-features__header { margin-bottom: clamp(3rem, 6vh, 5rem); }
+  .lcr-features__header .t-label { color: var(--c-accent); display: block; margin-bottom: 1rem; }
+  .lcr-features__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 300;
+    color: var(--c-white);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+  }
+  .lcr-features__heading em { font-style: italic; color: rgba(255,255,255,0.45); }
+
+  .lcr-features__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .lcr-features__item {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.4s;
+    position: relative;
+  }
+  .lcr-features__item:last-child { border-right: none; }
+  .lcr-features__item:hover { background: rgba(255,255,255,0.03); }
+
+  .lcr-features__num {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.05);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .lcr-features__title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--c-white);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .lcr-features__body {
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.48);
+    line-height: 1.75;
+  }
+
+  .lcr-features__cta-strip {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .lcr-features__tagline {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.4);
+    max-width: 40ch;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 900px) {
+    .lcr-features__grid { grid-template-columns: 1fr; }
+    .lcr-features__item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .lcr-features__item:last-child { border-bottom: none; }
+    .lcr-features__cta-strip { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<section class="lcr-features lcr-section">
+  <div class="lcr-container">
+
+    <div class="lcr-features__header">
+      <span class="t-label">Why LCR</span>
+      <h2 class="lcr-features__heading">
+        {{ section.settings.heading | default: 'Refined to every<br><em>last detail</em>' }}
+      </h2>
+    </div>
+
+    <div class="lcr-features__grid">
+      {% for block in section.blocks %}
+        <div class="lcr-features__item" {{ block.shopify_attributes }}>
+          <span class="lcr-features__num">0{{ forloop.index }}</span>
+          <h3 class="lcr-features__title">{{ block.settings.title }}</h3>
+          <p class="lcr-features__body">{{ block.settings.body }}</p>
+        </div>
+      {% else %}
+        <div class="lcr-features__item">
+          <span class="lcr-features__num">01</span>
+          <h3 class="lcr-features__title">Concierge Delivery</h3>
+          <p class="lcr-features__body">We deliver to your hotel, villa, or airport — anywhere across the Cape Peninsula, 24 hours a day.</p>
+        </div>
+        <div class="lcr-features__item">
+          <span class="lcr-features__num">02</span>
+          <h3 class="lcr-features__title">Concours Condition</h3>
+          <p class="lcr-features__body">Every vehicle is inspected, detailed, and serviced before each rental. Zero compromise on quality.</p>
+        </div>
+        <div class="lcr-features__item">
+          <span class="lcr-features__num">03</span>
+          <h3 class="lcr-features__title">Bespoke Itineraries</h3>
+          <p class="lcr-features__body">Our team plans the perfect drive — Chapman's Peak at sunrise, the Cape Winelands, or a track experience.</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="lcr-features__cta-strip">
+      <p class="lcr-features__tagline">{{ section.settings.tagline | default: '"Every journey begins before you turn the key."' }}</p>
+      <a href="{{ section.settings.cta_url | default: '/pages/enquire' }}" class="lcr-btn lcr-btn--light">
+        {{ section.settings.cta_text | default: 'Plan Your Experience' }}
+        <span class="lcr-btn__arrow">→</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Features",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Refined to every last detail" },
+    { "type": "text", "id": "tagline", "label": "Tagline" },
+    { "type": "text", "id": "cta_text", "label": "CTA text", "default": "Plan Your Experience" },
+    { "type": "url",  "id": "cta_url",  "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 6,
+      "settings": [
+        { "type": "text",     "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body",  "label": "Description" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Features",
+    "blocks": [
+      { "type": "feature", "settings": { "title": "Concierge Delivery", "body": "We deliver to your hotel, villa, or airport — anywhere across the Cape Peninsula, 24 hours a day." } },
+      { "type": "feature", "settings": { "title": "Concours Condition",  "body": "Every vehicle is inspected, detailed, and serviced before each rental. Zero compromise on quality." } },
+      { "type": "feature", "settings": { "title": "Bespoke Itineraries", "body": "Our team plans the perfect drive — Chapman's Peak at sunrise, the Cape Winelands, or a track experience." } }
+    ]
+  }]
+}
+{% endschema %}

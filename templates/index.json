@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "lcr-hero": {
+      "type": "lcr-hero",
+      "settings": {
+        "heading": "Drive Without Compromise",
+        "subheading": "Curated luxury and exotic vehicles for daily, weekly, and experiential hire across the Cape Peninsula.",
+        "cta_primary_text": "View the Fleet",
+        "cta_secondary_text": "Curated Experiences",
+        "stat_1_val": "40+",
+        "stat_1_label": "Vehicles",
+        "stat_2_val": "5★",
+        "stat_2_label": "Rated",
+        "stat_3_val": "24h",
+        "stat_3_label": "Concierge"
+      }
+    },
+    "lcr-fleet": {
+      "type": "lcr-fleet",
+      "settings": {
+        "limit": 6
+      }
+    },
+    "lcr-features": {
+      "type": "lcr-features",
+      "settings": {
+        "heading": "Refined to every last detail",
+        "tagline": "\"Every journey begins before you turn the key.\"",
+        "cta_text": "Plan Your Experience",
+        "cta_url": "/pages/enquire"
+      },
+      "blocks": {
+        "f1": { "type": "feature", "settings": { "title": "Concierge Delivery", "body": "We deliver to your hotel, villa, or airport — anywhere across the Cape Peninsula, 24 hours a day." } },
+        "f2": { "type": "feature", "settings": { "title": "Concours Condition",  "body": "Every vehicle is inspected, detailed, and serviced before each rental. Zero compromise on quality." } },
+        "f3": { "type": "feature", "settings": { "title": "Bespoke Itineraries", "body": "Our team plans the perfect drive — Chapman's Peak at sunrise, the Cape Winelands, or a track experience." } }
+      },
+      "blocks_order": ["f1","f2","f3"]
+    }
+  },
+  "order": ["lcr-hero","lcr-fleet","lcr-features"]
+}

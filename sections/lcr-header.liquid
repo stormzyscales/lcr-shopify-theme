@@ -1,0 +1,176 @@
+{% comment %} sections/lcr-header.liquid {% endcomment %}
+
+<style>
+  #lcr-header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 200;
+    padding: 0 var(--gutter);
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    transition: background 0.4s, box-shadow 0.4s, transform 0.4s;
+  }
+  #lcr-header.is-scrolled {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 var(--c-silver);
+  }
+  #lcr-header.is-hidden { transform: translateY(-100%); }
+
+  .lcr-header__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .lcr-header__logo-main {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--c-dark);
+  }
+  .lcr-header__logo-sub {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-mid);
+    margin-left: 0.7rem;
+    padding-left: 0.7rem;
+    border-left: 1px solid var(--c-silver);
+    line-height: 1;
+  }
+
+  .lcr-header__nav {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  .lcr-header__nav-link {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-charcoal);
+    position: relative;
+    transition: color 0.2s;
+  }
+  .lcr-header__nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--c-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--ease);
+  }
+  .lcr-header__nav-link:hover { color: var(--c-dark); }
+  .lcr-header__nav-link:hover::after { transform: scaleX(1); }
+
+  .lcr-header__actions { display: flex; align-items: center; gap: 1rem; }
+
+  .lcr-header__enquire {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--c-dark);
+    color: var(--c-dark);
+    transition: var(--t);
+  }
+  .lcr-header__enquire:hover { background: var(--c-dark); color: var(--c-white); }
+
+  /* Mobile toggle */
+  .lcr-nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    width: 24px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .lcr-nav-toggle span {
+    display: block;
+    height: 1px;
+    background: var(--c-dark);
+    transition: var(--t);
+  }
+  .lcr-nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .lcr-nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .lcr-nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* Mobile drawer */
+  .lcr-nav-drawer {
+    display: none;
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    background: var(--c-white);
+    z-index: 199;
+    padding: 2.5rem var(--gutter);
+    flex-direction: column;
+    gap: 2rem;
+    border-top: 1px solid var(--c-silver);
+    transform: translateX(100%);
+    transition: transform 0.4s var(--ease);
+  }
+  .lcr-nav-drawer.is-open { transform: translateX(0); }
+  .lcr-nav-drawer .lcr-header__nav-link { font-size: 1.1rem; letter-spacing: 0.1em; }
+
+  @media (max-width: 900px) {
+    .lcr-header__nav { display: none; }
+    .lcr-nav-toggle { display: flex; }
+    .lcr-nav-drawer { display: flex; }
+  }
+</style>
+
+<header id="lcr-header" role="banner">
+  <a href="{{ routes.root_url }}" class="lcr-header__logo" aria-label="{{ shop.name }} home">
+    <span class="lcr-header__logo-main">LCR</span>
+    <span class="lcr-header__logo-sub">Luxury Car Rentals</span>
+  </a>
+
+  <nav class="lcr-header__nav" aria-label="Main navigation">
+    <a href="{{ routes.collections_url }}" class="lcr-header__nav-link">Fleet</a>
+    <a href="/pages/experiences" class="lcr-header__nav-link">Experiences</a>
+    <a href="/pages/about" class="lcr-header__nav-link">About</a>
+    <a href="/pages/contact" class="lcr-header__nav-link">Contact</a>
+  </nav>
+
+  <div class="lcr-header__actions">
+    <a href="/pages/enquire" class="lcr-header__enquire">Enquire Now</a>
+    <button
+      class="lcr-nav-toggle hide-desktop"
+      id="lcr-nav-toggle"
+      aria-expanded="false"
+      aria-controls="lcr-nav-drawer"
+      aria-label="Open navigation"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="lcr-nav-drawer" id="lcr-nav-drawer" aria-label="Mobile navigation">
+  <a href="{{ routes.collections_url }}" class="lcr-header__nav-link">Fleet</a>
+  <a href="/pages/experiences" class="lcr-header__nav-link">Experiences</a>
+  <a href="/pages/about" class="lcr-header__nav-link">About</a>
+  <a href="/pages/contact" class="lcr-header__nav-link">Contact</a>
+  <a href="/pages/enquire" class="lcr-btn lcr-btn--dark" style="width:fit-content">Enquire Now</a>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": []
+}
+{% endschema %}

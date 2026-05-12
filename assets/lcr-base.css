@@ -1,0 +1,170 @@
+/* ============================================
+   LCR Luxury Car Rentals — Design System
+   Clean & minimal editorial aesthetic
+   ============================================ */
+
+:root {
+  --c-white:       #ffffff;
+  --c-off-white:   #f7f6f4;
+  --c-silver:      #e8e6e1;
+  --c-mid:         #9e9b95;
+  --c-dark:        #1a1916;
+  --c-charcoal:    #2e2c29;
+  --c-accent:      #c9a96e;
+  --c-accent-pale: #f0e8d8;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', -apple-system, sans-serif;
+
+  --max-w: 1320px;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t: 0.45s var(--ease);
+
+  --header-h: 72px;
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: var(--font-body); font-weight: 300; color: var(--c-dark); background: var(--c-white); line-height: 1.6; }
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; }
+ul, ol { list-style: none; }
+input, textarea, select { font-family: inherit; }
+
+/* ---- Skip link ---- */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--c-dark);
+  color: var(--c-white);
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-to-content:focus { top: 1rem; }
+
+/* ---- Container ---- */
+.lcr-container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---- Typography ---- */
+.t-display {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  font-weight: 300;
+  line-height: 0.93;
+  letter-spacing: -0.02em;
+}
+.t-heading-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.t-heading-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.15;
+}
+.t-heading-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+.t-label {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-mid);
+}
+.t-body { font-size: 0.95rem; line-height: 1.75; font-weight: 300; }
+.t-small { font-size: 0.8rem; line-height: 1.6; color: var(--c-mid); }
+
+/* ---- Buttons ---- */
+.lcr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: var(--t);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.lcr-btn--dark {
+  background: var(--c-dark);
+  color: var(--c-white);
+  padding: 0.9rem 2.2rem;
+  border: 1px solid var(--c-dark);
+}
+.lcr-btn--dark:hover { background: var(--c-charcoal); transform: translateY(-1px); }
+
+.lcr-btn--outline {
+  border: 1px solid var(--c-dark);
+  color: var(--c-dark);
+  padding: 0.9rem 2.2rem;
+}
+.lcr-btn--outline:hover { background: var(--c-dark); color: var(--c-white); }
+
+.lcr-btn--light {
+  background: var(--c-white);
+  color: var(--c-dark);
+  padding: 0.9rem 2.2rem;
+  border: 1px solid var(--c-white);
+}
+.lcr-btn--light:hover { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-white); transform: translateY(-1px); }
+
+.lcr-btn--ghost {
+  color: var(--c-dark);
+  padding: 0;
+  border-bottom: 1px solid transparent;
+}
+.lcr-btn--ghost:hover { border-bottom-color: var(--c-dark); }
+
+.lcr-btn__arrow { transition: transform 0.3s var(--ease); display: inline-block; }
+.lcr-btn:hover .lcr-btn__arrow { transform: translateX(4px); }
+
+/* ---- Rule ---- */
+.lcr-rule { border: none; border-top: 1px solid var(--c-silver); }
+
+/* ---- Animations ---- */
+@keyframes lcr-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lcr-fade-up   { animation: lcr-fade-up 0.9s var(--ease) both; }
+.lcr-delay-1   { animation-delay: 0.12s; }
+.lcr-delay-2   { animation-delay: 0.24s; }
+.lcr-delay-3   { animation-delay: 0.36s; }
+.lcr-delay-4   { animation-delay: 0.5s; }
+
+/* ---- Section spacing ---- */
+.lcr-section { padding-block: clamp(4rem, 10vh, 8rem); }
+.lcr-section--dark { background: var(--c-dark); }
+.lcr-section--off { background: var(--c-off-white); }
+
+/* ---- Responsive utilities ---- */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}

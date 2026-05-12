@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {% endif %}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+  {{ content_for_header }}
+
+  {{ 'lcr-base.css' | asset_url | stylesheet_tag }}
+</head>
+
+<body class="template-{{ template.name }}{% if template.suffix %}-{{ template.suffix }}{% endif %}">
+
+  <a class="skip-to-content" href="#MainContent">Skip to content</a>
+
+  {% section 'lcr-header' %}
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'lcr-footer' %}
+
+  {{ 'lcr-global.js' | asset_url | script_tag }}
+</body>
+</html>

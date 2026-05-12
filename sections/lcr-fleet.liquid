@@ -1,0 +1,288 @@
+{% comment %} sections/lcr-fleet.liquid {% endcomment %}
+
+<style>
+  .lcr-fleet { background: var(--c-white); }
+
+  .lcr-fleet__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .lcr-fleet__header-left .t-label { display: block; margin-bottom: 0.75rem; }
+  .lcr-fleet__view-all {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-mid);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+  .lcr-fleet__view-all:hover { color: var(--c-dark); border-bottom-color: var(--c-dark); }
+
+  /* Filters */
+  .lcr-fleet__filters {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .lcr-fleet__filter {
+    padding: 0.4rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid var(--c-silver);
+    color: var(--c-mid);
+    background: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lcr-fleet__filter:hover,
+  .lcr-fleet__filter[aria-pressed="true"] { border-color: var(--c-dark); color: var(--c-dark); }
+  .lcr-fleet__filter[aria-pressed="true"] { background: var(--c-dark); color: var(--c-white); }
+
+  /* Grid — editorial 12-col layout */
+  .lcr-fleet__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 3px;
+  }
+
+  .lcr-fleet__card { display: block; position: relative; overflow: hidden; background: var(--c-off-white); }
+  .lcr-fleet__card:nth-child(1) { grid-column: span 7; }
+  .lcr-fleet__card:nth-child(2) { grid-column: span 5; }
+  .lcr-fleet__card:nth-child(3) { grid-column: span 4; }
+  .lcr-fleet__card:nth-child(4) { grid-column: span 4; }
+  .lcr-fleet__card:nth-child(5) { grid-column: span 4; }
+  .lcr-fleet__card:nth-child(n+6) { grid-column: span 6; }
+
+  .lcr-fleet__card-media {
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: var(--c-silver);
+  }
+  .lcr-fleet__card:nth-child(1) .lcr-fleet__card-media { aspect-ratio: 16/9; }
+
+  .lcr-fleet__card-media img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+    display: block;
+  }
+  .lcr-fleet__card:hover .lcr-fleet__card-media img { transform: scale(1.06); }
+
+  /* Hover overlay */
+  .lcr-fleet__card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,25,22,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .lcr-fleet__card:hover .lcr-fleet__card-overlay { opacity: 1; }
+  .lcr-fleet__card-overlay span {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-white);
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 0.65rem 1.5rem;
+  }
+
+  /* Card body */
+  .lcr-fleet__card-body {
+    padding: 1.1rem 1.4rem 1.4rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .lcr-fleet__card-type {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 0.3rem;
+  }
+  .lcr-fleet__card-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--c-dark);
+    line-height: 1.1;
+  }
+  .lcr-fleet__card-price { text-align: right; flex-shrink: 0; }
+  .lcr-fleet__card-from {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-mid);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .lcr-fleet__card-amount {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--c-dark);
+  }
+
+  /* Footer */
+  .lcr-fleet__footer {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .lcr-fleet__count { font-size: 0.75rem; font-weight: 300; color: var(--c-mid); }
+
+  @media (max-width: 900px) {
+    .lcr-fleet__card:nth-child(n) { grid-column: span 12; }
+    .lcr-fleet__header { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .lcr-fleet__grid { gap: 1rem; }
+  }
+</style>
+
+<section class="lcr-fleet lcr-section">
+  <div class="lcr-container">
+
+    <div class="lcr-fleet__header">
+      <div class="lcr-fleet__header-left">
+        <span class="t-label">Our Collection</span>
+        <h2 class="t-heading-xl">The Fleet</h2>
+      </div>
+      <a href="{{ section.settings.collection.url | default: routes.collections_url }}" class="lcr-fleet__view-all">
+        View all vehicles <span>→</span>
+      </a>
+    </div>
+
+    <div class="lcr-fleet__filters" role="group" aria-label="Filter by type">
+      <button class="lcr-fleet__filter" aria-pressed="true" data-filter="all">All</button>
+      <button class="lcr-fleet__filter" aria-pressed="false" data-filter="sports">Sports</button>
+      <button class="lcr-fleet__filter" aria-pressed="false" data-filter="suv">SUV</button>
+      <button class="lcr-fleet__filter" aria-pressed="false" data-filter="convertible">Convertible</button>
+      <button class="lcr-fleet__filter" aria-pressed="false" data-filter="saloon">Saloon</button>
+    </div>
+
+    {% assign src_collection = section.settings.collection %}
+    {% if src_collection != blank %}
+      {% assign fleet_products = src_collection.products | limit: section.settings.limit %}
+    {% else %}
+      {% assign fleet_products = collections.all.products | limit: section.settings.limit %}
+    {% endif %}
+
+    <div class="lcr-fleet__grid" id="lcr-fleet-grid">
+      {% for product in fleet_products %}
+        <a
+          class="lcr-fleet__card"
+          href="{{ product.url }}"
+          data-tags="{{ product.tags | join: ',' | downcase }}"
+          data-type="{{ product.type | downcase }}"
+        >
+          <div class="lcr-fleet__card-media">
+            {% if product.featured_image %}
+              {{
+                product.featured_image
+                | image_url: width: 1000
+                | image_tag:
+                  loading: 'lazy',
+                  alt: product.featured_image.alt | default: product.title
+              }}
+            {% endif %}
+          </div>
+
+          <div class="lcr-fleet__card-overlay">
+            <span>View &amp; Enquire</span>
+          </div>
+
+          <div class="lcr-fleet__card-body">
+            <div>
+              <div class="lcr-fleet__card-type">{{ product.type | default: 'Luxury' }}</div>
+              <div class="lcr-fleet__card-name">{{ product.title }}</div>
+            </div>
+            <div class="lcr-fleet__card-price">
+              <span class="lcr-fleet__card-from">From / day</span>
+              <span class="lcr-fleet__card-amount">{{ product.price | money_without_trailing_zeros }}</span>
+            </div>
+          </div>
+        </a>
+      {% else %}
+        {% comment %} Placeholder cards when no products exist yet {% endcomment %}
+        {% for i in (1..6) %}
+          <div class="lcr-fleet__card">
+            <div class="lcr-fleet__card-media"></div>
+            <div class="lcr-fleet__card-body">
+              <div>
+                <div class="lcr-fleet__card-type">Luxury</div>
+                <div class="lcr-fleet__card-name">Vehicle {{ i }}</div>
+              </div>
+              <div class="lcr-fleet__card-price">
+                <span class="lcr-fleet__card-from">From / day</span>
+                <span class="lcr-fleet__card-amount">R 4,500</span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <div class="lcr-fleet__footer">
+      <a href="{{ src_collection.url | default: routes.collections_url }}" class="lcr-btn lcr-btn--outline">
+        Browse Full Fleet <span class="lcr-btn__arrow">→</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    const filters = document.querySelectorAll('.lcr-fleet__filter');
+    const cards   = document.querySelectorAll('#lcr-fleet-grid .lcr-fleet__card');
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filters.forEach(b => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        const f = btn.dataset.filter;
+        cards.forEach(card => {
+          const tags = card.dataset.tags || '';
+          const type = card.dataset.type || '';
+          const show = f === 'all' || tags.includes(f) || type.includes(f);
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Fleet Showcase",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Fleet collection" },
+    { "type": "range", "id": "limit", "min": 3, "max": 12, "step": 1, "default": 6, "label": "Products to show" }
+  ],
+  "presets": [{ "name": "Fleet Showcase" }]
+}
+{% endschema %}

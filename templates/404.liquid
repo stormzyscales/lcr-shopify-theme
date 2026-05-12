@@ -1,0 +1,35 @@
+{% comment %} templates/404.liquid {% endcomment %}
+<style>
+  .lcr-404 {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--gutter);
+    margin-top: var(--header-h);
+  }
+  .lcr-404__num {
+    font-family: var(--font-display);
+    font-size: clamp(8rem, 20vw, 16rem);
+    font-weight: 300;
+    color: var(--c-silver);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .lcr-404__heading {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+  .lcr-404__body { color: var(--c-mid); margin-bottom: 2rem; }
+</style>
+<div class="lcr-404">
+  <div>
+    <div class="lcr-404__num">404</div>
+    <h1 class="lcr-404__heading">Page not found</h1>
+    <p class="lcr-404__body">The page you're looking for doesn't exist.</p>
+    <a href="{{ routes.root_url }}" class="lcr-btn lcr-btn--dark">Back to home</a>
+  </div>
+</div>
