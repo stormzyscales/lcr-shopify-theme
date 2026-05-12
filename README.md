@@ -1,0 +1,1 @@
+# lcr-shopify-theme
